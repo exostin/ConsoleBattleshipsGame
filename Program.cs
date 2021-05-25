@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StatkiRewrite
+namespace BattleshipsGame
 {
     internal class Program
     {

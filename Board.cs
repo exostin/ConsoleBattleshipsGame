@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace StatkiRewrite
+namespace BattleshipsGame
 {
     internal class Board
     {

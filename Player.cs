@@ -1,4 +1,4 @@
-﻿namespace StatkiRewrite
+﻿namespace BattleshipsGame
 {
     internal class Player
     {
