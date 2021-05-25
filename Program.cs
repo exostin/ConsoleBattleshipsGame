@@ -41,11 +41,11 @@ namespace StatkiRewrite
 
                     while (true)
                     {
-                        UIPrintTurn();
-                        UIPrintPlayerGrid();
-                        UIPrintEnemyGrid();
-                        // Player attack prompt
-                        Console.Write("Enter the attack coordinates (vert/hor 1-10 ex. 9,1): ");
+                        UI.PrintTurnCounter(turnCount);
+                        UI.PrintPlayerGrid(board.lastHorizontalGridPos, board.lastVerticalGridPos, playerGrid);
+                        UI.PrintEnemyGrid(board.lastHorizontalGridPos, board.lastVerticalGridPos, enemyGrid);
+
+                        UI.PrintPlayerAttackPrompt();
                         string playerInput = Console.ReadLine();
                         if (playerInput.Contains(','))
                         {
@@ -163,52 +163,7 @@ namespace StatkiRewrite
                     return false;
                 }
             }
-
-            void UIPrintEnemyGrid()
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("|   ENEMY GRID   |");
-                Console.ResetColor();
-                for (int i = 1; i < board.lastHorizontalGridPos; i++)
-                {
-                    for (int j = 1; j < board.lastVerticalGridPos; j++)
-                    {
-                        if (enemyGrid[i, j] != 1)
-                        {
-                            Console.Write(string.Format("{0} ", enemyGrid[i, j]));
-                        }
-                        else
-                        {
-                            Console.Write("? ");
-                        }
-                    }
-                    Console.Write(Environment.NewLine);
-                }
-            }
-            void UIPrintPlayerGrid()
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("|   YOUR GRID   |");
-                Console.ResetColor();
-                for (int i = 1; i < board.lastHorizontalGridPos; i++)
-                {
-                    for (int j = 1; j < board.lastVerticalGridPos; j++)
-                    {
-                        Console.Write(string.Format("{0} ", playerGrid[i, j]));
-                    }
-                    Console.Write(Environment.NewLine);
-                }
-            }
-            void UIPrintTurn()
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"#  Turn no. {turnCount}   #");
-                Console.ResetColor();
-            }
-
             // 0 - empty space, 1 - a ship, 2 - miss, 3 - hit | and in future 4 as a destroyed ship
-
-            // TODO Metody do odpowiednich klas
         }
     }
 }
