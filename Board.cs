@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace BattleshipsGame
 {
-    internal class Board
+    class Board
     {
         private Random rand = new Random();
 
@@ -11,15 +11,22 @@ namespace BattleshipsGame
 
         public int LastVerticalGridPos { get; set; }
         public int LastHorizontalGridPos { get; set; }
-        public int[,] GeneratedBoard { get; set; }
+        public int[,] generatedBoard= new int[12, 12];
 
+        public Board()
+        {
+            generatedBoard = new int[12, 12];
+        }
+        public Board(int[,] board)
+        {
+            generatedBoard = board;
+        }
         /// <summary>
         /// Generate a board with a defined number of ships of specified type
         /// </summary>
         /// <param name="shipsConfiguration"> {5s, 4s, 3s, 2s, 1s} - how many of which ship to place</param>
-        public int[,] GenerateBoard(int[] shipsConfiguration)
+        public void GenerateBoard(int[] shipsConfiguration)
         {
-            GeneratedBoard = new int[12, 12];
             // Visual representation of this array
             // generatedBoard = new int[12, 12] { { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0},
             //                                    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -33,8 +40,11 @@ namespace BattleshipsGame
             //                                    { 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             //                                    { 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             //                                    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+            generatedBoard = new int[12, 12];
 
             CheckDimensions();
+
+            // Loop generating 15 ships in random locations which cannot overlap or be next to eachother
             for (int i = 0; i < 15;)
             {
                 while (true)
@@ -43,7 +53,7 @@ namespace BattleshipsGame
                     var randomHorizontalStartPoint = rand.Next(firstGridPos, LastHorizontalGridPos);
                     if (!CheckIfTheresShipNearby(randomVerticalStartPoint, randomHorizontalStartPoint))
                     {
-                        GeneratedBoard[randomVerticalStartPoint, randomHorizontalStartPoint] = 1;
+                        generatedBoard[randomVerticalStartPoint, randomHorizontalStartPoint] = 1;
                         i++;
                         break;
                     }
@@ -53,7 +63,6 @@ namespace BattleshipsGame
                     }
                 }
             }
-            return GeneratedBoard;
         }
 
         /// <summary>
@@ -61,8 +70,8 @@ namespace BattleshipsGame
         /// </summary>
         public void CheckDimensions()
         {
-            LastVerticalGridPos = GeneratedBoard.GetLength(0) - 1;
-            LastHorizontalGridPos = GeneratedBoard.GetLength(1) - 1;
+            LastVerticalGridPos = generatedBoard.GetLength(0) - 1;
+            LastHorizontalGridPos = generatedBoard.GetLength(1) - 1;
         }
 
         /// <summary>
@@ -73,15 +82,15 @@ namespace BattleshipsGame
         /// <returns>true if there is a ship nearby, false if there are none</returns>
         public bool CheckIfTheresShipNearby(int vertical, int horizontal)
         {
-            if (GeneratedBoard[vertical, horizontal] == 0 &&
-                (GeneratedBoard[vertical + 1, horizontal] != 1) &&
-                (GeneratedBoard[vertical - 1, horizontal] != 1) &&
-                (GeneratedBoard[vertical, horizontal + 1] != 1) &&
-                (GeneratedBoard[vertical, horizontal - 1] != 1) &&
-                (GeneratedBoard[vertical - 1, horizontal + 1] != 1) &&
-                (GeneratedBoard[vertical - 1, horizontal - 1] != 1) &&
-                (GeneratedBoard[vertical + 1, horizontal + 1] != 1) &&
-                (GeneratedBoard[vertical + 1, horizontal - 1] != 1))
+            if (generatedBoard[vertical, horizontal] == 0 &&
+                (generatedBoard[vertical + 1, horizontal] != 1) &&
+                (generatedBoard[vertical - 1, horizontal] != 1) &&
+                (generatedBoard[vertical, horizontal + 1] != 1) &&
+                (generatedBoard[vertical, horizontal - 1] != 1) &&
+                (generatedBoard[vertical - 1, horizontal + 1] != 1) &&
+                (generatedBoard[vertical - 1, horizontal - 1] != 1) &&
+                (generatedBoard[vertical + 1, horizontal + 1] != 1) &&
+                (generatedBoard[vertical + 1, horizontal - 1] != 1))
             {
                 return false;
             }
@@ -100,16 +109,16 @@ namespace BattleshipsGame
         /// <returns>true if something was hit, false if it was a miss</returns>
         public bool LaunchAttack(int verticalCoordinate, int horizontalCoordinate)
         {
-            if (GeneratedBoard[verticalCoordinate, horizontalCoordinate] == 1)
+            if (generatedBoard[verticalCoordinate, horizontalCoordinate] == 1)
             {
                 // Mark that spot as hit
-                GeneratedBoard[verticalCoordinate, horizontalCoordinate] = 3;
+                generatedBoard[verticalCoordinate, horizontalCoordinate] = 3;
                 return true;
             }
             else
             {
                 // Mark that spot as a miss
-                GeneratedBoard[verticalCoordinate, horizontalCoordinate] = 2;
+                generatedBoard[verticalCoordinate, horizontalCoordinate] = 2;
                 return false;
             }
         }
@@ -119,7 +128,7 @@ namespace BattleshipsGame
         /// </summary>
         public bool CheckIfDefeated()
         {
-            if (!GeneratedBoard.Cast<int>().Contains(1))
+            if (!generatedBoard.Cast<int>().Contains(1))
             {
                 return true;
             }

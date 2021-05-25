@@ -2,16 +2,13 @@
 
 namespace BattleshipsGame
 {
-    internal class Program
+    class Program
     {
         private static void Main(string[] args)
         {
             Player player = new Player();
             Enemy enemy = new Enemy();
             Random rand = new Random();
-
-            Board playerBoard = new Board();
-            Board enemyBoard = new Board();
 
             int turnCount = 1;
 
@@ -32,16 +29,16 @@ namespace BattleshipsGame
                 if (configurationParseSuccess && (configurationIndex >= 1 && configurationIndex <= 5))
                 {
                     // Generating enemy grid with the original configuration
-                    enemyBoard.GenerateBoard(new int[] { 1, 2, 3, 4, 5 });
+                    enemy.board.GenerateBoard(new int[] { 1, 2, 3, 4, 5 });
                     // Creating a grid for the player according to his chosen configuration scheme
-                    playerBoard.GenerateBoard(player.ChooseShips(configurationIndex));
+                    player.board.GenerateBoard(player.ChooseShips(configurationIndex));
                     Console.WriteLine("");
 
                     while (true)
                     {
                         UI.PrintTurnCounter(turnCount);
-                        UI.PrintPlayerGrid(playerBoard.LastHorizontalGridPos, playerBoard.LastVerticalGridPos, playerBoard.GeneratedBoard);
-                        UI.PrintEnemyGrid(enemyBoard.LastHorizontalGridPos, enemyBoard.LastVerticalGridPos, enemyBoard.GeneratedBoard);
+                        UI.PrintPlayerGrid(player.board.LastHorizontalGridPos, player.board.LastVerticalGridPos, player.board.generatedBoard);
+                        UI.PrintEnemyGrid(enemy.board.LastHorizontalGridPos, enemy.board.LastVerticalGridPos, enemy.board.generatedBoard);
 
                         UI.PrintPlayerAttackPrompt();
                         string playerInput = Console.ReadLine();
@@ -53,22 +50,22 @@ namespace BattleshipsGame
 
                             if ((verticalAttackParseSuccess && horizontalAttackParseSuccess) &&
                                 // Checking if player input is in bounds of grid array in both dimensions
-                                (playerVerticalAttackCoord >= playerBoard.firstGridPos) &&
-                                (playerVerticalAttackCoord <= playerBoard.LastVerticalGridPos - 1) &&
-                                (playerHorizontalAttackCoord >= playerBoard.firstGridPos) &&
-                                (playerHorizontalAttackCoord <= playerBoard.LastHorizontalGridPos - 1))
+                                (playerVerticalAttackCoord >= player.board.firstGridPos) &&
+                                (playerVerticalAttackCoord <= player.board.LastVerticalGridPos - 1) &&
+                                (playerHorizontalAttackCoord >= player.board.firstGridPos) &&
+                                (playerHorizontalAttackCoord <= player.board.LastHorizontalGridPos - 1))
                             {
-                                if (enemyBoard.GeneratedBoard[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 2 ||
-                                    enemyBoard.GeneratedBoard[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 3)
+                                if (enemy.board.generatedBoard[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 2 ||
+                                    enemy.board.generatedBoard[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 3)
                                 {
                                     Console.WriteLine("You've already fired at that location!");
                                 }
                                 else
                                 {
-                                    if (enemyBoard.LaunchAttack(playerVerticalAttackCoord, playerHorizontalAttackCoord))
+                                    if (enemy.board.LaunchAttack(playerVerticalAttackCoord, playerHorizontalAttackCoord))
                                     {
                                         Console.WriteLine("Hit scored!");
-                                        if (enemyBoard.CheckIfDefeated())
+                                        if (enemy.board.CheckIfDefeated())
                                         {
                                             Console.WriteLine("Victory!!!");
                                             break;
@@ -84,16 +81,16 @@ namespace BattleshipsGame
                                     }
 
                                     // Executing enemy move and checking if he hit any ship
-                                    while (EnemyMove())
+                                    while (enemy.Move())
                                     {
                                         Console.WriteLine("The enemy has hit your ship!");
-                                        if (playerBoard.CheckIfDefeated())
+                                        if (player.board.CheckIfDefeated())
                                         {
                                             break;
                                         }
                                     }
 
-                                    if (playerBoard.CheckIfDefeated())
+                                    if (player.board.CheckIfDefeated())
                                     {
                                         Console.WriteLine("You lost!");
                                         break;
@@ -119,20 +116,7 @@ namespace BattleshipsGame
                 }
             }
 
-            bool EnemyMove()
-            {
-                int enemyAttackRandomVerticalCoord = rand.Next(playerBoard.firstGridPos, playerBoard.LastVerticalGridPos + 1);
-                int enemyAttackRandomHorizontalCoord = rand.Next(playerBoard.firstGridPos, playerBoard.LastHorizontalGridPos + 1);
-
-                if (playerBoard.LaunchAttack(enemyAttackRandomVerticalCoord, enemyAttackRandomHorizontalCoord))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
+            
         }
     }
 }
