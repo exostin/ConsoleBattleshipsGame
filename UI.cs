@@ -8,6 +8,7 @@ namespace StatkiRewrite
         {
             Console.Write("Enter the attack coordinates (vert/hor 1-10 ex. 9,1): ");
         }
+
         public static void PrintEnemyGrid(int lastHorizontalGridPos, int lastVerticalGridPos, int[,] enemyGrid)
         {
             Console.ForegroundColor = ConsoleColor.Red;
@@ -43,8 +44,8 @@ namespace StatkiRewrite
                 }
                 Console.Write(Environment.NewLine);
             }
-
         }
+
         public static void PrintTurnCounter(int turnCount)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
