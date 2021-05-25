@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace StatkiRewrite
 {
@@ -7,13 +6,12 @@ namespace StatkiRewrite
     {
         private static void Main(string[] args)
         {
-            Board board = new Board();
             Player player = new Player();
             Enemy enemy = new Enemy();
             Random rand = new Random();
 
-            int[,] enemyGrid;
-            int[,] playerGrid;
+            Board playerBoard = new Board();
+            Board enemyBoard = new Board();
 
             int turnCount = 1;
 
@@ -34,16 +32,16 @@ namespace StatkiRewrite
                 if (configurationParseSuccess && (configurationIndex >= 1 && configurationIndex <= 5))
                 {
                     // Generating enemy grid with the original configuration
-                    enemyGrid = board.GenerateBoard(new int[] { 1, 2, 3, 4, 5 });
+                    enemyBoard.GenerateBoard(new int[] { 1, 2, 3, 4, 5 });
                     // Creating a grid for the player according to his chosen configuration scheme
-                    playerGrid = board.GenerateBoard(player.ChooseShips(configurationIndex));
+                    playerBoard.GenerateBoard(player.ChooseShips(configurationIndex));
                     Console.WriteLine("");
 
                     while (true)
                     {
                         UI.PrintTurnCounter(turnCount);
-                        UI.PrintPlayerGrid(board.lastHorizontalGridPos, board.lastVerticalGridPos, playerGrid);
-                        UI.PrintEnemyGrid(board.lastHorizontalGridPos, board.lastVerticalGridPos, enemyGrid);
+                        UI.PrintPlayerGrid(playerBoard.LastHorizontalGridPos, playerBoard.LastVerticalGridPos, playerBoard.GeneratedBoard);
+                        UI.PrintEnemyGrid(enemyBoard.LastHorizontalGridPos, enemyBoard.LastVerticalGridPos, enemyBoard.GeneratedBoard);
 
                         UI.PrintPlayerAttackPrompt();
                         string playerInput = Console.ReadLine();
@@ -55,22 +53,22 @@ namespace StatkiRewrite
 
                             if ((verticalAttackParseSuccess && horizontalAttackParseSuccess) &&
                                 // Checking if player input is in bounds of grid array in both dimensions
-                                (playerVerticalAttackCoord >= board.firstGridPos) &&
-                                (playerVerticalAttackCoord <= board.lastVerticalGridPos - 1) &&
-                                (playerHorizontalAttackCoord >= board.firstGridPos) &&
-                                (playerHorizontalAttackCoord <= board.lastHorizontalGridPos - 1))
+                                (playerVerticalAttackCoord >= playerBoard.firstGridPos) &&
+                                (playerVerticalAttackCoord <= playerBoard.LastVerticalGridPos - 1) &&
+                                (playerHorizontalAttackCoord >= playerBoard.firstGridPos) &&
+                                (playerHorizontalAttackCoord <= playerBoard.LastHorizontalGridPos - 1))
                             {
-                                if (enemyGrid[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 2 ||
-                                    enemyGrid[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 3)
+                                if (enemyBoard.GeneratedBoard[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 2 ||
+                                    enemyBoard.GeneratedBoard[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 3)
                                 {
                                     Console.WriteLine("You've already fired at that location!");
                                 }
                                 else
                                 {
-                                    if (Fire(playerVerticalAttackCoord, playerHorizontalAttackCoord, enemyGrid))
+                                    if (enemyBoard.LaunchAttack(playerVerticalAttackCoord, playerHorizontalAttackCoord))
                                     {
                                         Console.WriteLine("Hit scored!");
-                                        if (CheckVictory(enemyGrid))
+                                        if (enemyBoard.CheckIfDefeated())
                                         {
                                             Console.WriteLine("Victory!!!");
                                             break;
@@ -84,6 +82,24 @@ namespace StatkiRewrite
                                     {
                                         Console.WriteLine("Miss!");
                                     }
+
+                                    // Executing enemy move and checking if he hit any ship
+                                    while (EnemyMove())
+                                    {
+                                        Console.WriteLine("The enemy has hit your ship!");
+                                        if (playerBoard.CheckIfDefeated())
+                                        {
+                                            break;
+                                        }
+                                    }
+
+                                    if (playerBoard.CheckIfDefeated())
+                                    {
+                                        Console.WriteLine("You lost!");
+                                        break;
+                                    }
+
+                                    turnCount++;
                                 }
                             }
                             else
@@ -95,24 +111,6 @@ namespace StatkiRewrite
                         {
                             Console.WriteLine("Wrong input! Try again.");
                         }
-
-                        // Executing enemy turn and checking if he hit any ship
-                        while (EnemyTurn())
-                        {
-                            Console.WriteLine("The enemy has hit your ship!");
-                            if (CheckVictory(playerGrid))
-                            {
-                                break;
-                            }
-                        }
-
-                        if (CheckVictory(playerGrid))
-                        {
-                            Console.WriteLine("You lost!");
-                            break;
-                        }
-
-                        turnCount++;
                     }
                 }
                 else
@@ -121,9 +119,12 @@ namespace StatkiRewrite
                 }
             }
 
-            bool CheckVictory(int[,] gridToCheck)
+            bool EnemyMove()
             {
-                if (!gridToCheck.Cast<int>().Contains(1))
+                int enemyAttackRandomVerticalCoord = rand.Next(playerBoard.firstGridPos, playerBoard.LastVerticalGridPos + 1);
+                int enemyAttackRandomHorizontalCoord = rand.Next(playerBoard.firstGridPos, playerBoard.LastHorizontalGridPos + 1);
+
+                if (playerBoard.LaunchAttack(enemyAttackRandomVerticalCoord, enemyAttackRandomHorizontalCoord))
                 {
                     return true;
                 }
@@ -132,38 +133,6 @@ namespace StatkiRewrite
                     return false;
                 }
             }
-
-            bool Fire(int verticalCoordinate, int horizontalCoordinate, int[,] gridToFireAt)
-            {
-                if (gridToFireAt[verticalCoordinate, horizontalCoordinate] == 1)
-                {
-                    // Mark that spot as hit
-                    gridToFireAt[verticalCoordinate, horizontalCoordinate] = 3;
-                    return true;
-                }
-                else
-                {
-                    // Mark that spot as a miss
-                    gridToFireAt[verticalCoordinate, horizontalCoordinate] = 2;
-                    return false;
-                }
-            }
-
-            bool EnemyTurn()
-            {
-                int enemyAttackRandomVerticalCoord = rand.Next(board.firstGridPos, board.lastVerticalGridPos + 1);
-                int enemyAttackRandomHorizontalCoord = rand.Next(board.firstGridPos, board.lastHorizontalGridPos + 1);
-
-                if (Fire(enemyAttackRandomVerticalCoord, enemyAttackRandomHorizontalCoord, playerGrid))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            // 0 - empty space, 1 - a ship, 2 - miss, 3 - hit | and in future 4 as a destroyed ship
         }
     }
 }
