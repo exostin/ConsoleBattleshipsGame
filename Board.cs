@@ -9,7 +9,6 @@ namespace BattleshipsGame
 
         public int FirstGridPos { get; set; } = 1;
 
-
         public int LastVerticalGridPos { get; set; }
         public int LastHorizontalGridPos { get; set; }
         public int[,] GeneratedBoard { get; set; }
@@ -18,10 +17,12 @@ namespace BattleshipsGame
         {
             GeneratedBoard = new int[12, 12];
         }
+
         public Board(int[,] board)
         {
             GeneratedBoard = board;
         }
+
         /// <summary>
         /// Populate a board with a defined number of ships of specified type
         /// </summary>

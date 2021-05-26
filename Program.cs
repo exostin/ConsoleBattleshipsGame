@@ -104,8 +104,6 @@ namespace BattleshipsGame
                     UI.PrintWrongInput(2);
                 }
             }
-
-            
         }
     }
 }

@@ -67,6 +67,7 @@ namespace BattleshipsGame
         {
             Console.WriteLine("Hit scored!");
         }
+
         public static void PrintPositionAlreadyHit()
         {
             Console.WriteLine("You've already fired at that location!");
@@ -76,15 +77,17 @@ namespace BattleshipsGame
         {
             Console.WriteLine("The enemy has hit your ship!");
         }
+
         public static void PrintPlayerDefeat()
         {
             Console.WriteLine("You lost!");
         }
+
         /// <summary>
         /// Method that prints different messages based on parameter that specifies which wrong input scenario happened
         /// </summary>
         /// <param name="wrongInputScenario">Default - wrong input,
-        /// 1 - Coordinates out of bounds, 
+        /// 1 - Coordinates out of bounds,
         /// 2 - Configuration index out of bound or parsing error</param>
         public static void PrintWrongInput(int wrongInputScenario = 0)
         {
@@ -93,9 +96,11 @@ namespace BattleshipsGame
                 case 1:
                     Console.WriteLine("Coordinates out of bounds! Try again.");
                     break;
+
                 case 2:
                     Console.WriteLine("Wrong input or configuration index out of bounds! Try again.");
                     break;
+
                 default:
                     Console.WriteLine("Wrong input! Try again.");
                     break;
