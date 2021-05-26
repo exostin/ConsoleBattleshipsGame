@@ -11,11 +11,34 @@ namespace BattleshipsGame
 
         public static void PrintPlayerGrid(int lastHorizontalGridPos, int lastVerticalGridPos, int[,] playerGrid)
         {
+            char[] letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("|   YOUR GRID   |");
             Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write("   ");
+            for (int i = 0; i < lastVerticalGridPos - 1; i++)
+            {
+                Console.Write(string.Format("{0} ", letters[i]));
+            }
+            Console.Write(Environment.NewLine);
+            Console.ResetColor();
+
             for (int i = 1; i < lastHorizontalGridPos; i++)
             {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                if (i >= 10)
+                {
+                    Console.Write($"{i} ");
+                }
+                else
+                {
+                    Console.Write($"{i}  ");
+                }
+                Console.ResetColor();
+
                 for (int j = 1; j < lastVerticalGridPos; j++)
                 {
                     Console.Write(string.Format("{0} ", playerGrid[i, j]));
@@ -26,11 +49,34 @@ namespace BattleshipsGame
 
         public static void PrintEnemyGrid(int lastHorizontalGridPos, int lastVerticalGridPos, int[,] enemyGrid)
         {
+            char[] letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("|   ENEMY GRID   |");
             Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write("   ");
+            for (int i = 0; i < lastVerticalGridPos - 1; i++)
+            {
+                Console.Write(string.Format("{0} ", letters[i]));
+            }
+            Console.Write(Environment.NewLine);
+            Console.ResetColor();
+
             for (int i = 1; i < lastHorizontalGridPos; i++)
             {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                if(i >= 10)
+                {
+                    Console.Write($"{i} ");
+                }
+                else
+                {
+                    Console.Write($"{i}  ");
+                }
+                Console.ResetColor();
+
                 for (int j = 1; j < lastVerticalGridPos; j++)
                 {
                     if (enemyGrid[i, j] != 1)

@@ -8,7 +8,6 @@ namespace BattleshipsGame
         private Random rand = new Random();
 
         public int FirstGridPos { get; set; } = 1;
-
         public int LastVerticalGridPos { get; set; }
         public int LastHorizontalGridPos { get; set; }
         public int[,] GeneratedBoard { get; set; }
@@ -17,7 +16,6 @@ namespace BattleshipsGame
         {
             GeneratedBoard = new int[12, 12];
         }
-
         public Board(int[,] board)
         {
             GeneratedBoard = board;
@@ -29,19 +27,6 @@ namespace BattleshipsGame
         /// <param name="shipsConfiguration"> {5s, 4s, 3s, 2s, 1s} - how many of which ship to place</param>
         public void PopulateBoard(int[] shipsConfiguration)
         {
-            // Visual representation of the board
-            // generatedBoard = new int[12, 12] { { 0, A, B, C, D, E, F, G, H, I, J, 0},
-            //                                    { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            //                                    { 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            //                                    { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            //                                    { 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            //                                    { 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            //                                    { 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            //                                    { 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            //                                    { 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            //                                    { 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            //                                    { 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            //                                    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
             CheckDimensions();
 
             // Loop generating 15 ships in random locations which cannot overlap or be next to eachother
