@@ -4,7 +4,6 @@ namespace BattleshipsGame
 {
     static class UI
     {
-
         public static void PrintPlayerAttackPrompt()
         {
             Console.Write("Enter the attack coordinates (vert/hor 1-10 ex. 9,1): ");
@@ -50,7 +49,7 @@ namespace BattleshipsGame
         public static void PrintTurnCounter(int turnCount)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"\n#  Turn no. {turnCount}   #");
+            Console.WriteLine($"#  Turn no. {turnCount}   #");
             Console.ResetColor();
         }
 
@@ -72,6 +71,7 @@ namespace BattleshipsGame
         {
             Console.WriteLine("You've already fired at that location!");
         }
+
         public static void PrintEnemyHitOnPlayer()
         {
             Console.WriteLine("The enemy has hit your ship!");
