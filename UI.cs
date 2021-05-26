@@ -86,12 +86,12 @@ namespace BattleshipsGame
         /// <summary>
         /// Method that prints different messages based on parameter that specifies which wrong input scenario happened
         /// </summary>
-        /// <param name="wrongInputScenario">Default - wrong input,
+        /// <param name="scenario">Default - wrong input,
         /// 1 - Coordinates out of bounds,
         /// 2 - Configuration index out of bound or parsing error</param>
-        public static void PrintWrongInput(int wrongInputScenario = 0)
+        public static void PrintWrongInput(int scenario = 0)
         {
-            switch (wrongInputScenario)
+            switch (scenario)
             {
                 case 1:
                     Console.WriteLine("Coordinates out of bounds! Try again.");

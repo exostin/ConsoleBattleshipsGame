@@ -88,7 +88,7 @@ namespace BattleshipsGame
                             }
                             else
                             {
-                                UI.PrintWrongInput(1);
+                                UI.PrintWrongInput(scenario: 1);
                             }
                         }
                         else
@@ -99,7 +99,7 @@ namespace BattleshipsGame
                 }
                 else
                 {
-                    UI.PrintWrongInput(2);
+                    UI.PrintWrongInput(scenario: 2);
                 }
             }
         }
