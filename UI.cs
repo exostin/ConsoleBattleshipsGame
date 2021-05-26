@@ -6,7 +6,7 @@ namespace BattleshipsGame
     {
         public static void PrintPlayerAttackPrompt()
         {
-            Console.Write("Enter the attack coordinates (vert/hor 1-10 ex. 9,1): ");
+            Console.Write("Enter the attack coordinates (1-10, A-J): ");
         }
 
         public static void PrintPlayerGrid(int lastHorizontalGridPos, int lastVerticalGridPos, int[,] playerGrid)
@@ -94,7 +94,7 @@ namespace BattleshipsGame
             switch (scenario)
             {
                 case 1:
-                    Console.WriteLine("Coordinates out of bounds! Try again.");
+                    Console.WriteLine("Coordinates out of bounds or entered incorrectly! Try again.");
                     break;
 
                 case 2:

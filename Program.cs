@@ -33,23 +33,23 @@ namespace BattleshipsGame
                         {
                             string[] splitPlayerAttackCoords = playerInput.Split(',');
                             var verticalAttackParseSuccess = int.TryParse(splitPlayerAttackCoords[0], out int playerVerticalAttackCoord);
-                            var horizontalAttackParseSuccess = int.TryParse(splitPlayerAttackCoords[1], out int playerHorizontalAttackCoord);
-
+                            var horizontalAttackParseSuccess = char.TryParse(splitPlayerAttackCoords[1], out char playerHorizontalAlphabeticAttackCoord);
+                            int playerHorizontalConvertedToNumericalCoord = char.ToUpper(playerHorizontalAlphabeticAttackCoord) - 64;
                             if ((verticalAttackParseSuccess && horizontalAttackParseSuccess) &&
                                 // Checking if player input is in bounds of grid array in both dimensions
                                 (playerVerticalAttackCoord >= player.board.FirstGridPos) &&
                                 (playerVerticalAttackCoord <= player.board.LastVerticalGridPos - 1) &&
-                                (playerHorizontalAttackCoord >= player.board.FirstGridPos) &&
-                                (playerHorizontalAttackCoord <= player.board.LastHorizontalGridPos - 1))
+                                (playerHorizontalConvertedToNumericalCoord >= player.board.FirstGridPos) &&
+                                (playerHorizontalConvertedToNumericalCoord <= player.board.LastHorizontalGridPos - 1))
                             {
-                                if (enemy.board.GeneratedBoard[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 2 ||
-                                    enemy.board.GeneratedBoard[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 3)
+                                if (enemy.board.GeneratedBoard[playerVerticalAttackCoord, playerHorizontalConvertedToNumericalCoord] == 2 ||
+                                    enemy.board.GeneratedBoard[playerVerticalAttackCoord, playerHorizontalConvertedToNumericalCoord] == 3)
                                 {
                                     UI.PrintPositionAlreadyHit();
                                 }
                                 else
                                 {
-                                    if (enemy.board.LaunchAttack(playerVerticalAttackCoord, playerHorizontalAttackCoord))
+                                    if (enemy.board.LaunchAttack(playerVerticalAttackCoord, playerHorizontalConvertedToNumericalCoord))
                                     {
                                         UI.PrintPlayerHitMessage();
                                         if (enemy.board.CheckIfDefeated())
