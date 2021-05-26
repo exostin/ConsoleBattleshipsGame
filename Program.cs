@@ -8,7 +8,6 @@ namespace BattleshipsGame
         {
             Player player = new Player();
             Enemy enemy = new Enemy();
-            Random rand = new Random();
 
             int turnCount = 1;
 
@@ -32,6 +31,7 @@ namespace BattleshipsGame
                     enemy.board.GenerateBoard(new int[] { 1, 2, 3, 4, 5 });
                     // Creating a grid for the player according to his chosen configuration scheme
                     player.board.GenerateBoard(player.ChooseShips(configurationIndex));
+
                     Console.WriteLine("");
 
                     while (true)
@@ -81,7 +81,7 @@ namespace BattleshipsGame
                                     }
 
                                     // Executing enemy move and checking if he hit any ship
-                                    while (enemy.Move())
+                                    while (player.board.LaunchAttack(enemy.GetRandomVerticalCoord(), enemy.GetRandomHorizontalCoord()))
                                     {
                                         Console.WriteLine("The enemy has hit your ship!");
                                         if (player.board.CheckIfDefeated())

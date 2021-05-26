@@ -4,7 +4,6 @@
     {
         public Board board = new Board();
 
-        // Player actions:
         public int[] ChooseShips(int configurationIndex)
         {
             switch (configurationIndex)
