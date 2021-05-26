@@ -18,9 +18,7 @@ namespace BattleshipsGame
 
                 if (configurationParseSuccess && (configurationIndex >= 1 && configurationIndex <= 5))
                 {
-                    // Generating enemy grid with the original configuration
-                    enemy.board.PopulateBoard(new int[] { 1, 2, 3, 4, 5 });
-                    // Creating a grid for the player according to his chosen configuration scheme
+                    enemy.board.PopulateBoard(player.ChooseShips(configurationIndex));
                     player.board.PopulateBoard(player.ChooseShips(configurationIndex));
 
                     while (true)
