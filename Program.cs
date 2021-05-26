@@ -11,18 +11,9 @@ namespace BattleshipsGame
 
             int turnCount = 1;
 
-            string configurationOptions =
-                "1) 5, 44, 333, 2222, 11111 - original\r\n" +
-                "2) 55, 44, 333, 2222 - no 1s\r\n" +
-                "3) 555, 44, 3333 - no 1s and 2s\r\n" +
-                "4) 7x 5\r\n" +
-                "5) 35x 1";
-
             while (true)
             {
-                // Ships configuration
-                Console.WriteLine(configurationOptions);
-                Console.Write("Choose your prefered configuration: ");
+                UI.PrintConfigurationPrompt();
                 var configurationParseSuccess = int.TryParse(Console.ReadLine(), out var configurationIndex);
 
                 if (configurationParseSuccess && (configurationIndex >= 1 && configurationIndex <= 5))
@@ -31,8 +22,6 @@ namespace BattleshipsGame
                     enemy.board.GenerateBoard(new int[] { 1, 2, 3, 4, 5 });
                     // Creating a grid for the player according to his chosen configuration scheme
                     player.board.GenerateBoard(player.ChooseShips(configurationIndex));
-
-                    Console.WriteLine("");
 
                     while (true)
                     {
@@ -58,16 +47,16 @@ namespace BattleshipsGame
                                 if (enemy.board.generatedBoard[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 2 ||
                                     enemy.board.generatedBoard[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 3)
                                 {
-                                    Console.WriteLine("You've already fired at that location!");
+                                    UI.PrintPositionAlreadyHit();
                                 }
                                 else
                                 {
                                     if (enemy.board.LaunchAttack(playerVerticalAttackCoord, playerHorizontalAttackCoord))
                                     {
-                                        Console.WriteLine("Hit scored!");
+                                        UI.PrintPlayerHitMessage();
                                         if (enemy.board.CheckIfDefeated())
                                         {
-                                            Console.WriteLine("Victory!!!");
+                                            UI.PrintVictoryMessage();
                                             break;
                                         }
                                         else
@@ -77,13 +66,13 @@ namespace BattleshipsGame
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Miss!");
+                                        UI.PrintMissMessage();
                                     }
 
                                     // Executing enemy move and checking if he hit any ship
                                     while (player.board.LaunchAttack(enemy.GetRandomVerticalCoord(), enemy.GetRandomHorizontalCoord()))
                                     {
-                                        Console.WriteLine("The enemy has hit your ship!");
+                                        UI.PrintEnemyHitOnPlayer();
                                         if (player.board.CheckIfDefeated())
                                         {
                                             break;
@@ -92,7 +81,7 @@ namespace BattleshipsGame
 
                                     if (player.board.CheckIfDefeated())
                                     {
-                                        Console.WriteLine("You lost!");
+                                        UI.PrintPlayerDefeat();
                                         break;
                                     }
 
@@ -101,18 +90,18 @@ namespace BattleshipsGame
                             }
                             else
                             {
-                                Console.WriteLine("Coordinates out of bounds! Try again.");
+                                UI.PrintWrongInput(1);
                             }
                         }
                         else
                         {
-                            Console.WriteLine("Wrong input! Try again.");
+                            UI.PrintWrongInput();
                         }
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Wrong input! Try again.");
+                    UI.PrintWrongInput(2);
                 }
             }
 
