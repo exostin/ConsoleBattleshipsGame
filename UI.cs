@@ -4,6 +4,7 @@ namespace BattleshipsGame
 {
     static class UI
     {
+
         public static void PrintPlayerAttackPrompt()
         {
             Console.Write("Enter the attack coordinates (vert/hor 1-10 ex. 9,1): ");
@@ -49,8 +50,69 @@ namespace BattleshipsGame
         public static void PrintTurnCounter(int turnCount)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"#  Turn no. {turnCount}   #");
+            Console.WriteLine($"\n#  Turn no. {turnCount}   #");
             Console.ResetColor();
+        }
+
+        public static void PrintMissMessage()
+        {
+            Console.WriteLine("Miss!");
+        }
+
+        public static void PrintVictoryMessage()
+        {
+            Console.WriteLine("Victory!!!");
+        }
+
+        public static void PrintPlayerHitMessage()
+        {
+            Console.WriteLine("Hit scored!");
+        }
+        public static void PrintPositionAlreadyHit()
+        {
+            Console.WriteLine("You've already fired at that location!");
+        }
+        public static void PrintEnemyHitOnPlayer()
+        {
+            Console.WriteLine("The enemy has hit your ship!");
+        }
+        public static void PrintPlayerDefeat()
+        {
+            Console.WriteLine("You lost!");
+        }
+        /// <summary>
+        /// Method that prints different messages based on parameter that specifies which wrong input scenario happened
+        /// </summary>
+        /// <param name="wrongInputScenario">Default - wrong input,
+        /// 1 - Coordinates out of bounds, 
+        /// 2 - Configuration index out of bound or parsing error</param>
+        public static void PrintWrongInput(int wrongInputScenario = 0)
+        {
+            switch (wrongInputScenario)
+            {
+                case 1:
+                    Console.WriteLine("Coordinates out of bounds! Try again.");
+                    break;
+                case 2:
+                    Console.WriteLine("Wrong input or configuration index out of bounds! Try again.");
+                    break;
+                default:
+                    Console.WriteLine("Wrong input! Try again.");
+                    break;
+            }
+        }
+
+        public static void PrintConfigurationPrompt()
+        {
+            string configurationOptions =
+                "1) 5, 44, 333, 2222, 11111 - original\r\n" +
+                "2) 55, 44, 333, 2222 - no 1s\r\n" +
+                "3) 555, 44, 3333 - no 1s and 2s\r\n" +
+                "4) 7x 5\r\n" +
+                "5) 35x 1";
+
+            Console.WriteLine(configurationOptions);
+            Console.Write("Choose your prefered configuration: ");
         }
     }
 }
