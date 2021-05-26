@@ -4,7 +4,6 @@ namespace BattleshipsGame
 {
     static class UI
     {
-
         public static void PrintPlayerAttackPrompt()
         {
             Console.Write("Enter the attack coordinates (vert/hor 1-10 ex. 9,1): ");
@@ -50,7 +49,7 @@ namespace BattleshipsGame
         public static void PrintTurnCounter(int turnCount)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"\n#  Turn no. {turnCount}   #");
+            Console.WriteLine($"#  Turn no. {turnCount}   #");
             Console.ResetColor();
         }
 
@@ -68,23 +67,27 @@ namespace BattleshipsGame
         {
             Console.WriteLine("Hit scored!");
         }
+
         public static void PrintPositionAlreadyHit()
         {
             Console.WriteLine("You've already fired at that location!");
         }
+
         public static void PrintEnemyHitOnPlayer()
         {
             Console.WriteLine("The enemy has hit your ship!");
         }
+
         public static void PrintPlayerDefeat()
         {
             Console.WriteLine("You lost!");
         }
+
         /// <summary>
         /// Method that prints different messages based on parameter that specifies which wrong input scenario happened
         /// </summary>
         /// <param name="wrongInputScenario">Default - wrong input,
-        /// 1 - Coordinates out of bounds, 
+        /// 1 - Coordinates out of bounds,
         /// 2 - Configuration index out of bound or parsing error</param>
         public static void PrintWrongInput(int wrongInputScenario = 0)
         {
@@ -93,9 +96,11 @@ namespace BattleshipsGame
                 case 1:
                     Console.WriteLine("Coordinates out of bounds! Try again.");
                     break;
+
                 case 2:
                     Console.WriteLine("Wrong input or configuration index out of bounds! Try again.");
                     break;
+
                 default:
                     Console.WriteLine("Wrong input! Try again.");
                     break;

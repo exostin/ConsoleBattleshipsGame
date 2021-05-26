@@ -19,15 +19,15 @@ namespace BattleshipsGame
                 if (configurationParseSuccess && (configurationIndex >= 1 && configurationIndex <= 5))
                 {
                     // Generating enemy grid with the original configuration
-                    enemy.board.GenerateBoard(new int[] { 1, 2, 3, 4, 5 });
+                    enemy.board.PopulateBoard(new int[] { 1, 2, 3, 4, 5 });
                     // Creating a grid for the player according to his chosen configuration scheme
-                    player.board.GenerateBoard(player.ChooseShips(configurationIndex));
+                    player.board.PopulateBoard(player.ChooseShips(configurationIndex));
 
                     while (true)
                     {
                         UI.PrintTurnCounter(turnCount);
-                        UI.PrintPlayerGrid(player.board.LastHorizontalGridPos, player.board.LastVerticalGridPos, player.board.generatedBoard);
-                        UI.PrintEnemyGrid(enemy.board.LastHorizontalGridPos, enemy.board.LastVerticalGridPos, enemy.board.generatedBoard);
+                        UI.PrintPlayerGrid(player.board.LastHorizontalGridPos, player.board.LastVerticalGridPos, player.board.GeneratedBoard);
+                        UI.PrintEnemyGrid(enemy.board.LastHorizontalGridPos, enemy.board.LastVerticalGridPos, enemy.board.GeneratedBoard);
 
                         UI.PrintPlayerAttackPrompt();
                         string playerInput = Console.ReadLine();
@@ -39,13 +39,13 @@ namespace BattleshipsGame
 
                             if ((verticalAttackParseSuccess && horizontalAttackParseSuccess) &&
                                 // Checking if player input is in bounds of grid array in both dimensions
-                                (playerVerticalAttackCoord >= player.board.firstGridPos) &&
+                                (playerVerticalAttackCoord >= player.board.FirstGridPos) &&
                                 (playerVerticalAttackCoord <= player.board.LastVerticalGridPos - 1) &&
-                                (playerHorizontalAttackCoord >= player.board.firstGridPos) &&
+                                (playerHorizontalAttackCoord >= player.board.FirstGridPos) &&
                                 (playerHorizontalAttackCoord <= player.board.LastHorizontalGridPos - 1))
                             {
-                                if (enemy.board.generatedBoard[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 2 ||
-                                    enemy.board.generatedBoard[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 3)
+                                if (enemy.board.GeneratedBoard[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 2 ||
+                                    enemy.board.GeneratedBoard[playerVerticalAttackCoord, playerHorizontalAttackCoord] == 3)
                                 {
                                     UI.PrintPositionAlreadyHit();
                                 }
@@ -104,8 +104,6 @@ namespace BattleshipsGame
                     UI.PrintWrongInput(2);
                 }
             }
-
-            
         }
     }
 }
