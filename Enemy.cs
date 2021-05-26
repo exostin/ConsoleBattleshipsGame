@@ -1,10 +1,18 @@
-﻿namespace BattleshipsGame
+﻿using System;
+
+namespace BattleshipsGame
 {
-    internal class Enemy
+    class Enemy : Player
     {
-        public void EnemyTurn()
+        public Random rand = new Random();
+       
+        public int GetRandomVerticalCoord()
         {
-            /*...*/
+            return rand.Next(board.firstGridPos, board.LastVerticalGridPos + 1);
+        }
+        public int GetRandomHorizontalCoord()
+        {
+            return rand.Next(board.firstGridPos, board.LastHorizontalGridPos + 1);
         }
     }
 }

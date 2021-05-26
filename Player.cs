@@ -1,8 +1,9 @@
 ﻿namespace BattleshipsGame
 {
-    internal class Player
+    class Player
     {
-        // Player actions:
+        public Board board = new Board();
+
         public int[] ChooseShips(int configurationIndex)
         {
             switch (configurationIndex)
