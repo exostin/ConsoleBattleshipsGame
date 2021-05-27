@@ -165,5 +165,16 @@ namespace BattleshipsGame
             Console.WriteLine(configurationOptions);
             Console.Write("Choose your prefered configuration: ");
         }
+
+        public static void AskForDifficulty()
+        {
+            string difficultiesChoices =
+                "0 - Easy\n" +
+                "1 - Normal\n" +
+                "2 - Hard\n" +
+                "3 - Extreme\n";
+            Console.WriteLine(difficultiesChoices);
+            Console.Write("Choose your prefered difficulty: ");
+        }
     }
 }

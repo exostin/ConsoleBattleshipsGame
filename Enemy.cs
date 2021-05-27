@@ -4,61 +4,131 @@ namespace BattleshipsGame
 {
     class Enemy : Player
     {
-        public Random rand = new Random();
+        private Random _rand = new Random();
 
-        public int GetRandomVerticalCoord()
+        public int[,] PlayerBoardGrid { get; set; }
+        public int CurrentDifficulty { get; set; } = 0;
+        int VerticalCoord { get; set; }
+        int HorizontalCoord { get; set; }
+        int[] AttackCoords { get; set; }
+
+        public void GetPlayerBoard(ref Board playerBoard)
         {
-            return rand.Next(board.FirstGridPos, board.LastVerticalGridPos + 1);
+            PlayerBoardGrid = playerBoard.GeneratedBoard;
         }
 
-        public int GetRandomHorizontalCoord()
+        public void GenerateCoordinates()
         {
-            return rand.Next(board.FirstGridPos, board.LastHorizontalGridPos + 1);
+            VerticalCoord = _rand.Next(board.FirstGridPos, board.LastVerticalGridPos);
+            HorizontalCoord = _rand.Next(board.FirstGridPos, board.LastHorizontalGridPos);
         }
 
-        public void ChooseAIIntelligenceLevel()
+        public int[] Attack()
         {
-            /*...*/
+            //while (true)
+            //{
+            //    // Easy
+            //    if (CurrentDifficulty >= 1)
+            //    {
+            //        GenerateCoordinates();
+            //        // Normal
+            //        if (CurrentDifficulty >= 2)
+            //        {
+            //            if (PlayerBoardGrid[VerticalCoord, HorizontalCoord] == 2 ||
+            //                PlayerBoardGrid[VerticalCoord, HorizontalCoord] == 3)
+            //            {
+            //                GenerateCoordinates();
+            //            }
+            //        }
+            //    }
+            //    break;
+            //}
+
+
+
+            switch (CurrentDifficulty)
+            {
+                case 0:
+                    // Easy: This AI intelligence level will: attack purely random positions
+                    GenerateCoordinates();
+                    break;
+
+                case 1:
+                    // Normal: This AI intelligence level will: attack positions that haven't been hit yet
+                    GenerateCoordsWhichHaventBeenUsed();
+                    break;
+
+                case 2:
+                    // Hard: This AI intelligence level will: attack positions that aren't near to other already hit positions
+                    GenerateStrategicCoordsWithUnpopulatedNeighbours();
+                    break;
+
+                case 3:
+                    // Extreme: This AI intelligence level will: kill a ship every turn and then fire a random shot
+                    GeneratePopulatedCoords();
+                    break;
+
+                default:
+                    // Easy
+                    break;
+            }
+
+            AttackCoords = new int[] { VerticalCoord, HorizontalCoord };
+            return AttackCoords;
         }
 
-        /// <summary>
-        /// This AI intelligence level will: attack only purely random positions
-        /// </summary>
-        public void Easy()
+        public void GenerateCoordsWhichHaventBeenUsed()
         {
-            /*...*/
+            GenerateCoordinates();
+            while (true)
+            {
+                if (PlayerBoardGrid[VerticalCoord, HorizontalCoord] == 2 || PlayerBoardGrid[VerticalCoord, HorizontalCoord] == 3)
+                {
+                    GenerateCoordinates();
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
         }
 
-        /// <summary>
-        /// This AI intelligence level will: attack positions that haven't been hit yet
-        /// </summary>
-        public void Normal()
+        public void GenerateStrategicCoordsWithUnpopulatedNeighbours()
         {
-            /*...*/
+            GenerateCoordsWhichHaventBeenUsed();
+            while (CheckIfThereAreNeighbours())
+            {
+                GenerateCoordsWhichHaventBeenUsed();
+            }
         }
 
-        /// <summary>
-        /// This AI intelligence level will: attack positions that aren't near to other already hit positions (CheckNearby())
-        /// </summary>
-        public void Hard()
+        public void GeneratePopulatedCoords()
         {
-            /*...*/
+            while(PlayerBoardGrid[VerticalCoord, HorizontalCoord] != 1)
+            {
+                GenerateStrategicCoordsWithUnpopulatedNeighbours();
+            }
         }
 
-        /// <summary>
-        /// This AI intelligence level will: use strategy (CheckNearby()) and already know about some ship positions
-        /// </summary>
-        public void Extreme()
+        public bool CheckIfThereAreNeighbours()
         {
-            /*...*/
-        }
-
-        /// <summary>
-        /// This AI intelligence level will: know about every ship and will proceed to kill 3 per each turn
-        /// </summary>
-        public void God()
-        {
-            /*...*/
+            if ((PlayerBoardGrid[VerticalCoord + 1, HorizontalCoord] != 3) &&
+                (PlayerBoardGrid[VerticalCoord - 1, HorizontalCoord] != 3) &&
+                (PlayerBoardGrid[VerticalCoord, HorizontalCoord + 1] != 3) &&
+                (PlayerBoardGrid[VerticalCoord, HorizontalCoord - 1] != 3) &&
+                (PlayerBoardGrid[VerticalCoord - 1, HorizontalCoord + 1] != 3) &&
+                (PlayerBoardGrid[VerticalCoord - 1, HorizontalCoord - 1] != 3) &&
+                (PlayerBoardGrid[VerticalCoord + 1, HorizontalCoord + 1] != 3) &&
+                (PlayerBoardGrid[VerticalCoord + 1, HorizontalCoord - 1] != 3))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
+        
 }

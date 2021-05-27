@@ -16,10 +16,16 @@ namespace BattleshipsGame
                 UI.PrintConfigurationPrompt();
                 var configurationParseSuccess = int.TryParse(Console.ReadLine(), out var configurationIndex);
 
-                if (configurationParseSuccess && (configurationIndex >= 1 && configurationIndex <= 5))
+                UI.AskForDifficulty();
+                var difficultyParseSuccess = int.TryParse(Console.ReadLine(), out var difficultyIndex);
+                enemy.CurrentDifficulty = difficultyIndex;
+
+                if (configurationParseSuccess && (configurationIndex >= 1 && configurationIndex <= 5) &&
+                    difficultyParseSuccess && (difficultyIndex >= 0 && difficultyIndex <= 3))
                 {
                     enemy.board.PopulateBoard(player.ChooseShips(configurationIndex));
                     player.board.PopulateBoard(player.ChooseShips(configurationIndex));
+                    enemy.PlayerBoardGrid = player.board.GeneratedBoard;
 
                     while (true)
                     {
@@ -66,9 +72,10 @@ namespace BattleshipsGame
                                     {
                                         UI.PrintMissMessage();
                                     }
-
+                                    // TODO: This can definitely be done better... reference(?)
+                                    //enemy.GetPlayerBoard(ref player.board);
                                     // Executing enemy move and checking if he hit any ship
-                                    while (player.board.LaunchAttack(enemy.GetRandomVerticalCoord(), enemy.GetRandomHorizontalCoord()))
+                                    while (player.board.LaunchAttack(enemy.Attack()[0], enemy.Attack()[1]))
                                     {
                                         UI.PrintEnemyHitOnPlayer();
                                         if (player.board.CheckIfDefeated())
