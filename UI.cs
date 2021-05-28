@@ -85,7 +85,7 @@ namespace BattleshipsGame
                     }
                     else
                     {
-                        Console.Write("? ");
+                        Console.Write("0 ");
                     }
                 }
                 Console.Write(Environment.NewLine);
@@ -106,7 +106,7 @@ namespace BattleshipsGame
 
         public static void PrintVictoryMessage()
         {
-            Console.WriteLine("Victory!!!");
+            Console.WriteLine("\n|   Victory!!!   |\n");
         }
 
         public static void PrintPlayerHitMessage()
@@ -126,7 +126,7 @@ namespace BattleshipsGame
 
         public static void PrintPlayerDefeat()
         {
-            Console.WriteLine("You lost!");
+            Console.WriteLine("\n|   You lost!   |\n");
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace BattleshipsGame
                 "2) 55, 44, 333, 2222 - no 1s\r\n" +
                 "3) 555, 44, 3333 - no 1s and 2s\r\n" +
                 "4) 7x 5\r\n" +
-                "5) 35x 1";
+                "5) 35x 1\n";
 
             Console.WriteLine(configurationOptions);
             Console.Write("Choose your prefered configuration: ");
@@ -169,10 +169,10 @@ namespace BattleshipsGame
         public static void AskForDifficulty()
         {
             string difficultiesChoices =
-                "0 - Easy\n" +
-                "1 - Normal\n" +
-                "2 - Hard\n" +
-                "3 - Extreme\n";
+                "1 - Baby\n" +
+                "2 - Easy\n" +
+                "3 - Normal\n" +
+                "4 - Hard\n";
             Console.WriteLine(difficultiesChoices);
             Console.Write("Choose your prefered difficulty: ");
         }
