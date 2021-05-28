@@ -10,21 +10,38 @@ namespace BattleshipsGame
             Enemy enemy = new Enemy();
 
             int turnCount = 1;
+            int boardVerticalSize;
+            int boardHorizontalSize;
 
             while (true)
             {
-                UI.PrintConfigurationPrompt();
+                UI.AskForShipConfigurationTemplate();
                 var configurationParseSuccess = int.TryParse(Console.ReadLine(), out var configurationIndex);
 
                 UI.AskForDifficulty();
                 var difficultyParseSuccess = int.TryParse(Console.ReadLine(), out var difficultyIndex);
                 enemy.CurrentDifficulty = difficultyIndex;
 
-                if (configurationParseSuccess && (configurationIndex >= 1 && configurationIndex <= 5) &&
-                    difficultyParseSuccess && (difficultyIndex >= 1 && difficultyIndex <= 4))
+                UI.AskForBoardSize();
+                string boardSizeInput = Console.ReadLine().ToLower();
+                if (boardSizeInput.Contains('x'))
                 {
-                    enemy.board.PopulateBoard(player.ChooseShips(configurationIndex));
-                    player.board.PopulateBoard(player.ChooseShips(configurationIndex));
+                    boardVerticalSize = Convert.ToInt32(boardSizeInput.Split('x')[0]) + 2;
+                    boardHorizontalSize = Convert.ToInt32(boardSizeInput.Split('x')[1]) + 2;
+                }
+                else
+                {
+                    UI.PrintWrongInput(3);
+                    continue;
+                }
+
+                if (configurationParseSuccess && (configurationIndex >= 1 && configurationIndex <= 5) &&
+                    difficultyParseSuccess && (difficultyIndex >= 1 && difficultyIndex <= 4) &&
+                    boardVerticalSize <= 26 + 2 && boardHorizontalSize <= 26 + 2 && boardVerticalSize >= 3 + 2&& boardHorizontalSize >= 3 + 2)
+                {
+                    enemy.board.PopulateBoard(player.ChooseShips(configurationIndex), boardVerticalSize, boardHorizontalSize);
+                    player.board.PopulateBoard(player.ChooseShips(configurationIndex), boardVerticalSize, boardHorizontalSize);
+
                     enemy.PlayerBoardGrid = player.board.GeneratedBoard;
 
                     while (true)
