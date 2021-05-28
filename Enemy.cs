@@ -49,7 +49,7 @@ namespace BattleshipsGame
             switch (CurrentDifficulty)
             {
                 case 0:
-                    // Easy: This AI intelligence level will: attack purely random positions
+                    // Easy: This AI intelligence level will: attack random positions and has a 33% chance to purosefully miss if it hit something
                     GenerateCoordinates();
                     break;
 
@@ -103,6 +103,7 @@ namespace BattleshipsGame
             }
         }
 
+        // Hit one and then purposefully miss
         public void GeneratePopulatedCoords()
         {
             while(PlayerBoardGrid[VerticalCoord, HorizontalCoord] != 1)
