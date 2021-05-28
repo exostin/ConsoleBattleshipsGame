@@ -27,12 +27,11 @@ namespace BattleshipsGame
             GeneratedBoard = new int[vertical, horizontal];
             CheckDimensions();
 
+            // Calculate the lowest possible number of ships that can be placed on the board without overlapping
+            // Board surface / area the ship takes being near wall or another ship
             var shipsTotalToPlace = ((vertical - 2) * (horizontal - 2)) / 6;
-            //if (shipsTotalToPlace % 2 != 0)
-            //{
-            //    shipsTotalToPlace--;
-            //}
-            // Loop generating 15 ships in random locations which cannot overlap or be next to eachother
+
+            // Loop generating x ships in random locations which cannot overlap or be next to eachother
             for (int i = 0; i < shipsTotalToPlace;)
             {
                 while (true)
