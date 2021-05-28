@@ -21,7 +21,7 @@ namespace BattleshipsGame
                 enemy.CurrentDifficulty = difficultyIndex;
 
                 if (configurationParseSuccess && (configurationIndex >= 1 && configurationIndex <= 5) &&
-                    difficultyParseSuccess && (difficultyIndex >= 0 && difficultyIndex <= 3))
+                    difficultyParseSuccess && (difficultyIndex >= 1 && difficultyIndex <= 4))
                 {
                     enemy.board.PopulateBoard(player.ChooseShips(configurationIndex));
                     player.board.PopulateBoard(player.ChooseShips(configurationIndex));

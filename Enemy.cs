@@ -11,80 +11,102 @@ namespace BattleshipsGame
         int VerticalCoord { get; set; }
         int HorizontalCoord { get; set; }
         int[] AttackCoords { get; set; }
+        int MissOnPurposeChance { get; set; } = 33;
+
+        public int[] Attack()
+        {
+            switch (CurrentDifficulty)
+            {
+                case 1:
+                    BabyAI();
+                    break;
+
+                case 2:
+                    EasyAI();
+                    break;
+
+                case 3:
+                    NormalAI();
+                    break;
+
+                case 4:
+                    HardAI();
+                    break;
+
+                default:
+                    NormalAI();
+                    break;
+            }
+            AttackCoords = new int[] { VerticalCoord, HorizontalCoord };
+            return AttackCoords;
+        }
+
+        /// <summary>
+        /// This AI intelligence level will: has a small chance to purosefully reroll the coords if they would hit a ship
+        /// </summary>
+        public void BabyAI()
+        {
+            GenerateCoordsWhichHaventBeenUsed();
+            if (PlayerBoardGrid[VerticalCoord, HorizontalCoord] == 1)
+            {
+                var missCheck = _rand.Next(1, 101);
+                if (missCheck <= MissOnPurposeChance)
+                {
+                    GenerateCoordsWhichHaventBeenUsed();
+                }
+            }
+        }
+
+        /// <summary>
+        /// This AI intelligence level will simply attack positions that haven't been hit yet
+        /// </summary>
+        public void EasyAI()
+        {
+            GenerateCoordsWhichHaventBeenUsed();
+        }
+
+        /// <summary>
+        /// This AI intelligence level will: attack positions that aren't near to other already hit positions
+        /// </summary>
+        public void NormalAI()
+        {
+            GenerateStrategicCoordsWithUnpopulatedNeighbours();
+        }
+
+        /// <summary>
+        /// This AI intelligence level will: generate a guaranteed hit coordinates and have a small chance to generate new ones that don't
+        /// </summary>
+        public void HardAI()
+        {
+            GeneratePopulatedCoords();
+
+            var missCheck = _rand.Next(1, 101);
+            if (missCheck <= MissOnPurposeChance)
+            {
+                GenerateStrategicCoordsWithUnpopulatedNeighbours();
+            }
+
+        }
 
         public void GetPlayerBoard(ref Board playerBoard)
         {
             PlayerBoardGrid = playerBoard.GeneratedBoard;
         }
 
-        public void GenerateCoordinates()
+        public void GenerateRandomCoordinates()
         {
             VerticalCoord = _rand.Next(board.FirstGridPos, board.LastVerticalGridPos);
             HorizontalCoord = _rand.Next(board.FirstGridPos, board.LastHorizontalGridPos);
         }
 
-        public int[] Attack()
-        {
-            //while (true)
-            //{
-            //    // Easy
-            //    if (CurrentDifficulty >= 1)
-            //    {
-            //        GenerateCoordinates();
-            //        // Normal
-            //        if (CurrentDifficulty >= 2)
-            //        {
-            //            if (PlayerBoardGrid[VerticalCoord, HorizontalCoord] == 2 ||
-            //                PlayerBoardGrid[VerticalCoord, HorizontalCoord] == 3)
-            //            {
-            //                GenerateCoordinates();
-            //            }
-            //        }
-            //    }
-            //    break;
-            //}
-
-
-
-            switch (CurrentDifficulty)
-            {
-                case 0:
-                    // Easy: This AI intelligence level will: attack random positions and has a 33% chance to purosefully miss if it hit something
-                    GenerateCoordinates();
-                    break;
-
-                case 1:
-                    // Normal: This AI intelligence level will: attack positions that haven't been hit yet
-                    GenerateCoordsWhichHaventBeenUsed();
-                    break;
-
-                case 2:
-                    // Hard: This AI intelligence level will: attack positions that aren't near to other already hit positions
-                    GenerateStrategicCoordsWithUnpopulatedNeighbours();
-                    break;
-
-                case 3:
-                    // Extreme: This AI intelligence level will: kill a ship every turn and then fire a random shot
-                    GeneratePopulatedCoords();
-                    break;
-
-                default:
-                    // Easy
-                    break;
-            }
-
-            AttackCoords = new int[] { VerticalCoord, HorizontalCoord };
-            return AttackCoords;
-        }
-
         public void GenerateCoordsWhichHaventBeenUsed()
         {
-            GenerateCoordinates();
+            GenerateRandomCoordinates();
             while (true)
             {
                 if (PlayerBoardGrid[VerticalCoord, HorizontalCoord] == 2 || PlayerBoardGrid[VerticalCoord, HorizontalCoord] == 3)
                 {
-                    GenerateCoordinates();
+                    GenerateRandomCoordinates();
                 }
                 else
                 {
@@ -103,7 +125,6 @@ namespace BattleshipsGame
             }
         }
 
-        // Hit one and then purposefully miss
         public void GeneratePopulatedCoords()
         {
             while(PlayerBoardGrid[VerticalCoord, HorizontalCoord] != 1)
