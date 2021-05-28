@@ -147,13 +147,17 @@ namespace BattleshipsGame
                     Console.WriteLine("Wrong input or configuration index out of bounds! Try again.");
                     break;
 
+                case 3:
+                    Console.WriteLine("Wrong input, board size out of bounds or you didn't use \'x\'! Try again.");
+                    break;
+
                 default:
                     Console.WriteLine("Wrong input! Try again.");
                     break;
             }
         }
 
-        public static void PrintConfigurationPrompt()
+        public static void AskForShipConfigurationTemplate()
         {
             string configurationOptions =
                 "1) 5, 44, 333, 2222, 11111 - original\r\n" +
@@ -175,6 +179,11 @@ namespace BattleshipsGame
                 "4 - Hard\n";
             Console.WriteLine(difficultiesChoices);
             Console.Write("Choose your prefered difficulty: ");
+        }
+        public static void AskForBoardSize()
+        {
+            Console.WriteLine("You can choose how big should the board be, from 3x3 to 26x26");
+            Console.Write("Choose your prefered board size (ex. 12x12): ");
         }
     }
 }

@@ -14,24 +14,25 @@ namespace BattleshipsGame
 
         public Board()
         {
+            // Default size (10x10 for player)
             GeneratedBoard = new int[12, 12];
-        }
-        public Board(int[,] board)
-        {
-            GeneratedBoard = board;
         }
 
         /// <summary>
         /// Populate a board with a defined number of ships of specified type
         /// </summary>
         /// <param name="shipsConfiguration"> {5s, 4s, 3s, 2s, 1s} - how many of which ship to place</param>
-        public void PopulateBoard(int[] shipsConfiguration)
+        public void PopulateBoard(int[] shipsConfiguration, int vertical, int horizontal)
         {
-            GeneratedBoard = new int[12, 12];
+            GeneratedBoard = new int[vertical, horizontal];
             CheckDimensions();
 
-            // Loop generating 15 ships in random locations which cannot overlap or be next to eachother
-            for (int i = 0; i < 15;)
+            // Calculate the lowest possible number of ships that can be placed on the board without overlapping
+            // Board surface / area the ship takes being near wall or another ship
+            var shipsTotalToPlace = ((vertical - 2) * (horizontal - 2)) / 6;
+
+            // Loop generating x ships in random locations which cannot overlap or be next to eachother
+            for (int i = 0; i < shipsTotalToPlace;)
             {
                 while (true)
                 {
