@@ -27,6 +27,7 @@ namespace BattleshipsGame
         /// <param name="shipsConfiguration"> {5s, 4s, 3s, 2s, 1s} - how many of which ship to place</param>
         public void PopulateBoard(int[] shipsConfiguration)
         {
+            GeneratedBoard = new int[12, 12];
             CheckDimensions();
 
             // Loop generating 15 ships in random locations which cannot overlap or be next to eachother
