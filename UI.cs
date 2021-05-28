@@ -182,7 +182,7 @@ namespace BattleshipsGame
         }
         public static void AskForBoardSize()
         {
-            Console.WriteLine("You can choose how big should the board be, from 3x3 to 26x26");
+            Console.WriteLine("\nYou can choose how big should the board be, from 3x3 to 26x26");
             Console.Write("Choose your prefered board size (ex. 12x12): ");
         }
     }
