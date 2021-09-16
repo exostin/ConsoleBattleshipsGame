@@ -6,7 +6,7 @@ namespace BattleshipsGame
     {
         public static void PrintPlayerAttackPrompt()
         {
-            Console.Write("Enter the attack coordinates (1-10, A-J): ");
+            Console.Write("Enter the attack coordinates (ex: 3,B): ");
         }
 
         public static void PrintPlayerGrid(int lastHorizontalGridPos, int lastVerticalGridPos, int[,] playerGrid)
@@ -67,7 +67,7 @@ namespace BattleshipsGame
             for (int i = 1; i < lastHorizontalGridPos; i++)
             {
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                if(i >= 10)
+                if (i >= 10)
                 {
                     Console.Write($"{i} ");
                 }
@@ -180,6 +180,7 @@ namespace BattleshipsGame
             Console.WriteLine(difficultiesChoices);
             Console.Write("Choose your prefered difficulty: ");
         }
+
         public static void AskForBoardSize()
         {
             Console.WriteLine("\nYou can choose how big should the board be, from 3x3 to 26x26");
